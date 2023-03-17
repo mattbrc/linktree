@@ -1,11 +1,13 @@
-import supabase from "@/utils/supabaseClient";
+// import supabase from "@/utils/supabaseClient";
 import { useRouter } from "next/router";
 import { useState } from "react";
+import { useSupabaseClient } from "@supabase/auth-helpers-react";
 
 export default function Signup() {
   const [email, setEmail] = useState<string | undefined>();
   const [password, setPassword] = useState<string | undefined>();
   const router = useRouter();
+  const supabase = useSupabaseClient();
 
   async function signInWithEmail() {
     try {

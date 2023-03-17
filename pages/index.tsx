@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import supabase from "@/utils/supabaseClient";
+import { useSupabaseClient, useUser } from "@supabase/auth-helpers-react";
 import { useRouter } from "next/router";
 
 type Link = {
@@ -14,19 +14,34 @@ export default function Home() {
   const [url, setUrl] = useState<string | undefined>();
   const [links, setLinks] = useState<Link[]>([]);
   const router = useRouter();
+  const supabase = useSupabaseClient();
+  const user = useUser();
 
   useEffect(() => {
-    const getUser = async () => {
-      const user = await supabase.auth.getUser();
-      console.log("user", user);
-      if (user) {
-        const userId = user.data.user?.id;
-        setUserId(userId);
-        setIsAuthenticated(true);
-      }
-    };
+    // const getUser = async () => {
+    //   const user = await supabase.auth.getUser();
+    //   console.log("user", user);
+    //   if (user) {
+    //     const userId = user.data.user?.id;
+    //     setUserId(userId);
+    //     setIsAuthenticated(true);
+    //   } else {
+    //     const userId = "aslkdjf";
+    //   }
+    //   if (user.data.user === null) {
+    //     router.push("/login");
+    //   }
+    // };
 
-    getUser();
+    // getUser();
+    if (user) {
+      const userId = user?.id;
+      setUserId(userId);
+      setIsAuthenticated(true);
+    } else {
+      router.push("/login");
+    }
+    console.log("user", user);
   }, []);
 
   useEffect(() => {
